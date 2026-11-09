@@ -3,11 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>space-survivor</title>
   </head>
   <body>
-    <div id="app"></div>
+    <main id="cockpit">
+      <aside class="side-panel mission-panel" aria-label="Mission board and experience">
+        <div class="panel-heading"><span>MISSION BOARD</span><span class="record-mark">11 ACTIVE</span></div>
+        <div class="xp-wallet">
+          <span class="readout-label">AVAILABLE EXPERIENCE</span>
+          <strong id="xp-balance">000000</strong>
+          <span id="xp-lifetime" class="xp-wallet-note">LIFETIME EARNED 000000 XP</span>
+          <span id="save-status" class="save-status" aria-live="polite"></span>
+        </div>
+        <div id="mission-list" class="mission-list" aria-label="Active mission progress"></div>
+        <div id="mission-alert" class="mission-alert" aria-live="assertive"></div>
+      </aside>
+
+      <section class="game-panel">
+        <div class="panel-heading"><span>FORWARD VIEW</span><span class="view-status">EXTERNAL CAM <i></i> LIVE</span></div>
+        <div id="game-screen">
+          <div class="touch-controls is-hidden" aria-label="Touch flight controls">
+            <div class="touch-dpad" role="group" aria-label="Ship movement">
+              <button type="button" data-flight-control="up" aria-label="Move ship up">▲</button>
+              <button type="button" data-flight-control="left" aria-label="Move ship left">◀</button>
+              <button type="button" data-flight-control="down" aria-label="Move ship down">▼</button>
+              <button type="button" data-flight-control="right" aria-label="Move ship right">▶</button>
+            </div>
+            <button type="button" class="touch-fire" data-flight-control="fire" aria-label="Fire lasers">FIRE</button>
+          </div>
+          <span id="game-announcer" class="sr-only" role="status" aria-live="assertive" aria-atomic="true"></span>
+          <div class="forward-record" aria-label="Personal best score">
+            <span>PERSONAL BEST</span>
+            <strong id="forward-best">000000</strong>
+          </div>
+          <div id="forward-mission-alert" class="forward-mission-alert" aria-live="assertive" aria-atomic="true">
+            <span class="forward-mission-kicker">MISSION COMPLETE</span>
+            <strong id="forward-mission-name"></strong>
+            <span id="forward-mission-reward"></span>
+          </div>
+          <div id="active-powerups" class="active-powerups" aria-label="Active powerups" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <aside class="side-panel blank-panel" aria-label="Reserved cockpit panel"></aside>
+
+      <footer class="control-panel">
+        <div class="control-title">
+          <span class="control-kicker">FLIGHT CONTROL</span>
+          <span class="control-subtitle">SYSTEMS ONLINE</span>
+        </div>
+        <div class="bottom-score">
+          <span class="readout-label">MISSION SCORE</span>
+          <strong id="hud-score">000000</strong>
+        </div>
+        <div class="bottom-hull">
+          <div class="hull-label-row"><span class="readout-label">HULL INTEGRITY</span><strong id="hull-percent">100%</strong></div>
+          <div class="hull-track" role="progressbar" aria-label="Hull integrity" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100"><div id="hull-fill"></div></div>
+          <span class="hull-status" role="status" aria-live="polite">LIFE SUPPORT // NOMINAL</span>
+        </div>
+        <div class="key-controls">
+          <span class="readout-label">MANUAL NAVIGATION</span>
+          <div class="key-row"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>OR</span><kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd><span>FIRE</span><kbd class="fire-key">SPACE</kbd></div>
+          <div id="boss-powers" class="boss-powers" role="group" aria-label="Run-only boss abilities"></div>
+          <span class="touch-hint">TOUCH: ON-SCREEN D-PAD + FIRE</span>
+        </div>
+      </footer>
+    </main>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

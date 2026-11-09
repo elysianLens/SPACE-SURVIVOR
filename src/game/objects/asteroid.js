@@ -5,21 +5,22 @@ export default class Asteroid extends Phaser.GameObjects.Polygon {
 
     constructor(scene, x, y, radius, speed) {
 
-        // Random asteroid colours
-        const asteroidColors = [
-            0x888888,
-            0x666666,
-            0x8b7355,
-            0x6b647d,
-            0x5c6670
+        // Deep mineral tones with neon edges to match the ship and starfield
+        const asteroidPalettes = [
+            { fill: 0x302044, outline: 0xc084fc, facet: 0xe9a8ff },
+            { fill: 0x1c3045, outline: 0x67e8f9, facet: 0xa5f3fc },
+            { fill: 0x3b203c, outline: 0xf0abfc, facet: 0xfbcfe8 },
+            { fill: 0x24264a, outline: 0x8b8cff, facet: 0xc4b5fd },
+            { fill: 0x203b42, outline: 0x5eead4, facet: 0xa7f3d0 }
         ];
 
-        const color = asteroidColors[
-            Math.floor(Math.random() * asteroidColors.length)
+        const palette = asteroidPalettes[
+            Math.floor(Math.random() * asteroidPalettes.length)
         ];
 
         // Generate an irregular asteroid shape
         const points = [];
+        const collisionPoints = [];
         const sides = 9;
 
         for (let i = 0; i < sides; i++) {
@@ -31,19 +32,47 @@ export default class Asteroid extends Phaser.GameObjects.Polygon {
             const pointY = Math.sin(angle) * radius * variation;
 
             points.push(pointX, pointY);
+            collisionPoints.push({
+                x: pointX,
+                y: pointY
+            });
         }
 
-        super(scene, x, y, points, color, 1);
+        super(scene, x, y, points, palette.fill, 1);
 
         scene.add.existing(this);
 
+        this.collisionPoints = collisionPoints;
+        this.nearMissRegistered = false;
+        this.setDepth(1);
+
         this.radius = radius;
 
-        // Add rocky-looking outline
-        this.setStrokeStyle(2, 0x3b3545);
+        // Neon rim and restrained facet lines make each asteroid read like a space mineral.
+        this.setStrokeStyle(2.5, palette.outline, 0.9);
+        this.facetLines = scene.add.graphics().setDepth(1.1);
+        this.facetLines.lineStyle(1.2, palette.facet, 0.32);
 
-        // Store asteroid speed
-        this.speed = speed;
+        const originX = this.displayOriginX;
+        const originY = this.displayOriginY;
+        const facetCenter = { x: -originX, y: -originY };
+
+        for (let i = 1; i < sides; i += 3) {
+            this.facetLines.beginPath();
+            this.facetLines.moveTo(facetCenter.x, facetCenter.y);
+            this.facetLines.lineTo(
+                collisionPoints[i].x - originX,
+                collisionPoints[i].y - originY
+            );
+            this.facetLines.strokePath();
+        }
+
+        this.facetLines.setPosition(x, y);
+
+        // Keep a base speed so difficulty can scale it without compounding.
+        this.baseSpeed = speed;
+        this.speedMultiplier = scene.speedMultiplier ?? 1;
+        this.speed = this.baseSpeed * this.speedMultiplier;
 
         // Random rotation speed
         this.rotationSpeed = Math.random() * 2 - 1;
@@ -56,18 +85,37 @@ export default class Asteroid extends Phaser.GameObjects.Polygon {
 
         // Rotate asteroid
         this.rotation += this.rotationSpeed * delta / 1000;
+        this.facetLines.setPosition(this.x, this.y);
+        this.facetLines.setRotation(this.rotation);
 
         // Check if asteroid has left the screen
         if (this.y > 540 + this.radius) {
 
             // Send it back above the screen
             this.y = -this.radius;
+            this.nearMissRegistered = false;
 
             // New random horizontal position
             this.x = Math.random() * 960;
 
-            // New random speed
-            this.speed = Math.random() * 100 + 50;
+            // New random base speed, scaled by the current threat level.
+            this.baseSpeed = Math.random() * 100 + 50;
+            this.speed = this.baseSpeed * this.speedMultiplier;
+            this.scene.trySpawnPowerUpFromSky();
         }
+    }
+
+    setDifficultyMultiplier(multiplier) {
+        this.speedMultiplier = multiplier;
+        this.speed = this.baseSpeed * this.speedMultiplier;
+    }
+
+    destroy(fromScene) {
+        if (this.facetLines) {
+            this.facetLines.destroy();
+            this.facetLines = null;
+        }
+
+        super.destroy(fromScene);
     }
 }
