@@ -78,7 +78,3 @@ The game is hosted using Firebase Hosting.
 SPACE-SURVIVOR is a personal game development project created to explore JavaScript game development, Phaser, game mechanics, object-oriented programming, and interactive design.
 
 This project is continuously evolving, with new features, improvements, and refinements along the way.
-
----
-
-**Made with curiosity and a lot of debugging.** 🚀
