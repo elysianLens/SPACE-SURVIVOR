@@ -71,7 +71,7 @@ The optimized build will be generated inside the `dist` folder.
 
 The game is hosted using Firebase Hosting.
 
-[SPACE-SURVIVOR – Live Demo](https://space-survivor-4c65b.web.app)
+[SPACE-SURVIVOR](https://space-survivor-4c65b.web.app)
 
 ## 👨‍💻 About the Project
 
