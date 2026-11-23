@@ -6,7 +6,7 @@ Dodge incoming asteroids, fight hostile enemies, survive increasingly difficult 
 
 ## 🎮 Play the Game
 
-[Play SPACE-SURVIVOR](https://space-survivor-4c65b.web.app)
+Play [SPACE-SURVIVOR](https://space-survivor-4c65b.web.app)
 
 ## ✨ Features
 
@@ -34,7 +34,7 @@ To run the project on your computer:
 **1. Clone the repository**
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone MY_REPOSITORY_URL
 ```
 
 **2. Navigate into the project folder**
