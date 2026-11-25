@@ -6,7 +6,7 @@ Dodge incoming asteroids, fight hostile enemies, survive increasingly difficult 
 
 ## 🎮 Play the Game
 
-Play: [SPACE-SURVIVOR](https://space-survivor-4c65b.web.app)
+Play [SPACE-SURVIVOR](https://space-survivor-4c65b.web.app)
 
 ## ✨ Features
 
